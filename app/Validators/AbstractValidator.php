@@ -17,6 +17,9 @@ abstract class AbstractValidator
      */
     protected $rules = [];
 
+    /**
+     * @var array
+     */
     protected $messages = [];
 
     /**
@@ -34,6 +37,9 @@ abstract class AbstractValidator
      */
     protected $data = [];
 
+    /**
+     * @var
+     */
     protected $formValidator;
 
     /**
@@ -110,12 +116,16 @@ abstract class AbstractValidator
     public function getRequest()
     {
         if ($this->request instanceof Request) {
-            return $this->request->all();
+            return $this->request;
         }
 
         return null;
     }
 
+    /**
+     * @param $key
+     * @param $message
+     */
     public function addError($key, $message)
     {
         $this->errors[$key] = [$message];
