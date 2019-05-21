@@ -24,15 +24,7 @@ class CustomerValidator extends AbstractValidator
             'taxable'    => 'required|sometimes',
             'address'   => 'required',
             'vat'       => 'required|string',
-            'vat_number'=> 'required|string',
-            'site_manager' => [
-                'firstname' => 'required',
-                'lastname' => 'required',
-                'email' => 'required',
-                'address' => 'required',
-                'phone' => 'required',
-                'mobile' => 'required',
-            ]
+            'vat_number'=> 'required|string'
         ];
 
         return $this->rules;

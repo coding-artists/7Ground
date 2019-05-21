@@ -50,26 +50,42 @@ class Customer extends Model
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function locations()
     {
         return $this->hasMany(Location::class, 'customer_id');
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function getAddressAttribute($value)
     {
         return json_decode($value, true);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function siteManager()
     {
         return $this->hasOne(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function calendars()
     {
         return $this->hasMany(Calendar::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
