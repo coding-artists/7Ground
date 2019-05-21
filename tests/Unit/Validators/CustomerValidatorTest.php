@@ -25,7 +25,21 @@ class CustomerValidatorTest extends TestCase
         $mockRequest->shouldReceive('all')->andReturn([]);
         $mockRequest->shouldReceive('getContent')->andReturn('{}');
 
-        Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'true', 'errors' => []]));
+        Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'false', 'errors' => []]));
+
+        $validator = new CustomerValidator();
+
+        $validator->validateRequest($mockRequest);
+    }
+
+    public function testShouldNotValidateRequest()
+    {
+        $mockRequest = Mockery::mock(Request::class);
+        $mockRequest->shouldReceive('isJson')->andReturn(true);
+        $mockRequest->shouldReceive('all')->andReturn([]);
+        $mockRequest->shouldReceive('getContent')->andReturn('{}');
+
+        Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'true', 'errors' => ['error' => 'true']]));
 
         $validator = new CustomerValidator();
 
