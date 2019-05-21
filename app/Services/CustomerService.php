@@ -66,7 +66,7 @@ class CustomerService
      * @param array $children
      * @return Customer|Customer[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function getOne($id, array $children)
+    public function getOne($id, array $children = [])
     {
         return $this->customerRepository->with($children)->findOrFail($id);
     }

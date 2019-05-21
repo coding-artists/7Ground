@@ -13,17 +13,15 @@ use App\Services\CustomerService;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Mockery;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class CustomerServiceTest extends TestCase
 {
     public function testShouldBeConstructed()
     {
         $mockCustomerRepository = Mockery::mock(Customer::class);
-        $mockRoleService = Mockery::mock(RoleService::class);
-        $mockUserService = Mockery::mock(UserService::class);
 
-        $service = new CustomerService($mockCustomerRepository, $mockUserService, $mockRoleService);
+        $service = new CustomerService($mockCustomerRepository);
 
         $this->assertInstanceOf(CustomerService::class, $service);
     }
@@ -33,10 +31,7 @@ class CustomerServiceTest extends TestCase
         $mockCustomerRepository = Mockery::mock(Customer::class);
         $mockCustomerRepository->shouldReceive('create')->andReturn($mockCustomerRepository);
 
-        $mockRoleService = Mockery::mock(RoleService::class);
-        $mockUserService = Mockery::mock(UserService::class);
-
-        $service = new CustomerService($mockCustomerRepository, $mockUserService, $mockRoleService);
+        $service = new CustomerService($mockCustomerRepository);
 
         $customer = $service->save(['address' => 'test_data']);
 
@@ -50,14 +45,34 @@ class CustomerServiceTest extends TestCase
         $mockCustomerRepository->shouldReceive('findOrFail')->andReturn($mockCustomerRepository);
         $mockCustomerRepository->shouldReceive('update')->andReturn($mockCustomerRepository);
 
-        $mockRoleService = Mockery::mock(RoleService::class);
-        $mockRoleService->shouldReceive('getByKey')->andReturn('test_role_key');
-        $mockUserService = Mockery::mock(UserService::class);
-
-        $service = new CustomerService($mockCustomerRepository, $mockUserService, $mockRoleService);
+        $service = new CustomerService($mockCustomerRepository);
         $customer = $service->save(['id' => 1]);
 
         $this->assertInstanceOf(CustomerService::class, $service);
         $this->assertInstanceOf(Customer::class, $customer);
+    }
+
+    public function testShouldGetCustomerCollection()
+    {
+        $mockCustomerRepository = Mockery::mock(Customer::class);
+        $mockCustomerRepository->shouldReceive('with')->with([])->andReturn($mockCustomerRepository);
+        $mockCustomerRepository->shouldReceive('get')->andReturn([$mockCustomerRepository]);
+
+        $service = new CustomerService($mockCustomerRepository);
+
+        $this->assertInstanceOf(CustomerService::class, $service);
+        $this->assertIsArray($service->getAll());
+    }
+
+    public function testShouldGetCustomerObject()
+    {
+        $mockCustomerRepository = Mockery::mock(Customer::class);
+        $mockCustomerRepository->shouldReceive('with')->with([])->andReturn($mockCustomerRepository);
+        $mockCustomerRepository->shouldReceive('findOrFail')->andReturn($mockCustomerRepository);
+
+        $service = new CustomerService($mockCustomerRepository);
+
+        $this->assertInstanceOf(CustomerService::class, $service);
+        $this->assertInstanceOf(Customer::class, $service->getOne(1));
     }
 }

@@ -30,6 +30,7 @@ class CustomerValidatorTest extends TestCase
         $validator = new CustomerValidator();
 
         $validator->validateRequest($mockRequest);
+        $this->assertIsArray($validator->getData());
     }
 
     public function testShouldNotValidateRequest()
