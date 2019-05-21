@@ -9,9 +9,10 @@
 namespace App\Services;
 
 
+use App\Interfaces\ServiceInterface;
 use App\Repository\Customer;
 
-class CustomerService
+class CustomerService implements ServiceInterface
 {
     /**
      * @var Customer

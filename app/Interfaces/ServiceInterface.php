@@ -11,8 +11,8 @@ namespace App\Interfaces;
 
 interface ServiceInterface
 {
-    public function save();
-    public function getOne();
-    public function getAll();
-    public function delete();
+    public function save(array $data);
+    public function getOne(array $children);
+    public function getAll(array $children);
+    public function delete($id);
 }
