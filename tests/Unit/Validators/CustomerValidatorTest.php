@@ -23,7 +23,7 @@ class CustomerValidatorTest extends TestCase
         $mockRequest = Mockery::mock(Request::class);
         $mockRequest->shouldReceive('isJson')->andReturn(true);
         $mockRequest->shouldReceive('all')->andReturn([]);
-        $mockRequest->shouldReceive('getContent')->andReturn('{}');
+        $mockRequest->shouldReceive('getContent')->andReturn(json_encode($this->getMockRequestData()));
 
         Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'false', 'errors' => []]));
 
@@ -39,10 +39,28 @@ class CustomerValidatorTest extends TestCase
         $mockRequest->shouldReceive('all')->andReturn([]);
         $mockRequest->shouldReceive('getContent')->andReturn('{}');
 
-        Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'true', 'errors' => ['error' => 'true']]));
+        Validator::shouldReceive('make')->andReturn(Mockery::mock(['fails' => 'true', 'errors' => ['name' => 'Test message']]));
 
         $validator = new CustomerValidator();
 
         $validator->validateRequest($mockRequest);
+        $this->assertEquals($validator->isValid(), false);
+        $this->assertIsArray($validator->getErrors());
+    }
+
+    private function getMockRequestData()
+    {
+        return [
+            'name'      => 'test',
+            'email'     => 'test@test.com',
+            'phone'     => '1234',
+            'fax'       => '1234',
+            'website'   => 'test.com',
+            'active'    => true,
+            'taxable'    => true,
+            'address'   => '{"formatted_address": "Test 123"}',
+            'vat'       => true,
+            'vat_number'=> '67886786767'
+        ];
     }
 }
